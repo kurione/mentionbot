@@ -6,9 +6,6 @@ module.exports = (robot) ->
   slack.on 'message', (msg) ->
     return if msg.subtype is 'bot_message'
 
-    text = msg.text.match(/Failed:  (.+?)'s build/)
-    return if text is null
-
-    commit_user = match[1]
-    robot.send {room: 'test'}, "@#{commit_user}: failed!"
-    return
+    msg.text /Failed:  (.+?)'s build/i, (commit_user) ->
+      robot.send {room: 'test'}, "@#{commit_user}: failed!"
+      return
