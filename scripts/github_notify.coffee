@@ -3,7 +3,8 @@ module.exports = (robot) ->
     #return if msg.type isnt 'message' || msg.subtype isnt 'bot_message'
     #return unless msg.attachments
     #match = msg.attachments[0].fallback.match(/Failed:  (.+?)'s build/)
-    robot.send {room: "##{test}"}, msg.text
+    robot.send {room: "test"}, msg.text
+    robot.send {room: "test"}, "おためし"
     return
 
     #match = msg.text.match(/Failed:  (.+?)'s build/)
