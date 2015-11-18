@@ -2,6 +2,8 @@
 #   github_notify
 
 module.exports = (robot) ->
+  account_map = {"MasatoUtsunomiya": "m.utsunomiya"}
+
   slack = robot.adapter.client
   slack.on 'message', (msg) ->
     return if msg.subtype is 'bot_message'
@@ -10,5 +12,6 @@ module.exports = (robot) ->
     return if hits is null
 
     commit_user = hits[1]
-    robot.send {room: 'test'}, "@#{commit_user}: failed!"
+    slack_user = account_map[commit_user]
+    robot.send {room: 'test'}, "@#{slack_user}: failed!"
     return
