@@ -9,6 +9,6 @@ module.exports = (robot) ->
     hits = msg.text.toString().match(/Failed:  (.+?)'s build/)
     return if hits is null
 
-    commit_user = hits.match[1]
+    commit_user = hits[1]
     robot.send {room: 'test'}, "@#{commit_user}: failed!"
     return
