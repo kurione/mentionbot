@@ -19,8 +19,8 @@ module.exports = (robot) ->
     slack_user = account_map[commit_user]
 
     attachment =
-      text    : "#{slack_user}: failed!"
-      color   : "#36a64f"
+      text    : ""
+      color   : "warning"
     reqbody = JSON.stringify(
       token       : options.webhook
       channel     : "#test"
