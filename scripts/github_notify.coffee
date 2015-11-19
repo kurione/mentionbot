@@ -2,7 +2,7 @@
 #   github_notify.coffee
 
 module.exports = (robot) ->
-  account_map = {"MasatoUtsunomiya": "@m.utsunomiya"}
+  account_map = {"MasatoUtsunomiya": "@t.izuhara"}
 
   slack = robot.adapter.client
   slack.on 'message', (msg) ->
