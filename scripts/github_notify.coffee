@@ -2,6 +2,10 @@
 #   github_notify.coffee
 
 module.exports = (robot) ->
+  options =
+    token: process.env.HUBOT_SLACK_TOKEN
+    webhook: process.env.HUBOT_SLACK_INCOMING_WEBHOOK
+
   account_map = {"MasatoUtsunomiya": "@m.utsunomiya"}
 
   slack = robot.adapter.client
@@ -14,12 +18,16 @@ module.exports = (robot) ->
     commit_user = hits[1]
     slack_user = account_map[commit_user]
 
-    robot.emit 'slack.attachment',
-      message: msg.message
-      content:
-        text      : "#{slack_user}: failed!"
-        fallback  : "fallback"
-        color     : "warning"
-      username    : "notifybot"
+    reqbody =
+      token       : options.token
       channel     : "test"
+      text        : "#{slack_user}: failed!"
       link_names  : 1
+      attachments : [color: "warning"]
+
+    robot.http(options.webhook)
+      .header("Content-Type", "application/json")
+      .post(reqbody) (err, res, body) ->
+        return if res.statusCode == 200
+
+        robot.logger.error "Error!", res.statusCode, body
