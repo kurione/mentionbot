@@ -14,11 +14,11 @@ module.exports = (robot) ->
     reg_result = msg.text.toString().match(/Failed:  (.+?)'s build/)
     return if reg_result is null
 
-    commit_user = reg_result[1]
-    slack_user = account_map[commit_user]
+    github_commit_user = reg_result[1]
+    slack_user = account_map[github_commit_user]
 
     attachment =
-      text    : "#{slack_user}: failed!"
+      text    : "#{slack_user}: deployに失敗したらしいよ"
       color   : "warning"
 
     reqbody = JSON.stringify(
