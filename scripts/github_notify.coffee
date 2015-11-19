@@ -5,9 +5,9 @@ module.exports = (robot) ->
   options =
     webhook: process.env.HUBOT_SLACK_INCOMING_WEBHOOK
 
-  account_map = JSON.stringify(
-    MasatoUtsunomiya: "@m.utsunomiya"
-  )
+  account_map = {
+    "MasatoUtsunomiya": "@m.utsunomiya"
+  }
 
   slack = robot.adapter.client
   slack.on 'message', (msg) ->
