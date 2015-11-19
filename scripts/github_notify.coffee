@@ -25,7 +25,9 @@ module.exports = (robot) ->
       username    : "notifybot"
       icon_emoji  : ":slack:"
       link_names  : 1
-      attachments : [color: "#36a64f"]
+      attachments : [text    : "#{slack_user}: failed!"
+                     color   : "#36a64f"
+                    ]
       )
 
     robot.logger.info reqbody
