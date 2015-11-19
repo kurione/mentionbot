@@ -19,7 +19,7 @@ module.exports = (robot) ->
 
     msgbody = JSON.stringify
       text       : "#{slack_user}: failed!"
-      username   : @robot.name
+      username   : "notifybot"
       channel    : "test"
       attachments : [attachment]
       link_names : 1
