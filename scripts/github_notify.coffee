@@ -26,6 +26,8 @@ module.exports = (robot) ->
       attachments : [color: "warning"]
       )
 
+    robot.logger.info reqbody
+
     robot.http(options.webhook)
       .header("Content-Type", "application/json")
       .post(reqbody) (err, res, body) ->
