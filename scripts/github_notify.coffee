@@ -2,7 +2,7 @@
 #   github_notify.coffee
 
 module.exports = (robot) ->
-  account_map = {"MasatoUtsunomiya": "@t.izuhara"}
+  account_map = {"MasatoUtsunomiya": "@m.utsunomiya"}
 
   slack = robot.adapter.client
   slack.on 'message', (msg) ->
@@ -17,7 +17,7 @@ module.exports = (robot) ->
     robot.emit 'slack.attachment',
       message: "#{slack_user}: failed!"
       content:
-        text      : "#{slack_user}: failed!"
+        text      : "content"
         color     : "warning",
       username    : "notifybot"
       channel     : "test"
