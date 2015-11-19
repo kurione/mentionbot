@@ -15,10 +15,11 @@ module.exports = (robot) ->
     slack_user = account_map[commit_user]
 
     robot.emit 'slack.attachment',
-      message: "#{slack_user}: failed!"
+      message: msg.message
       content:
-        text      : "content"
-        color     : "warning",
+        text      : "#{slack_user}: failed!"
+        fallback  : "fallback"
+        color     : "warning"
       username    : "notifybot"
       channel     : "test"
       link_names  : 1
