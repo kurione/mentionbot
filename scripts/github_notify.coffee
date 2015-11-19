@@ -18,6 +18,9 @@ module.exports = (robot) ->
     commit_user = hits[1]
     slack_user = account_map[commit_user]
 
+    attachment =
+      text    : "#{slack_user}: failed!"
+      color   : "#36a64f"
     reqbody = JSON.stringify(
       token       : options.webhook
       channel     : "#test"
@@ -25,9 +28,7 @@ module.exports = (robot) ->
       username    : "notifybot"
       icon_emoji  : ":slack:"
       link_names  : 1
-      attachments : [text    : "#{slack_user}: failed!"
-                     color   : "#36a64f"
-                    ]
+      attachments : [attachment]
       )
 
     robot.logger.info reqbody
