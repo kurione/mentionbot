@@ -1,5 +1,5 @@
 # Description:
-#   github_notify
+#   github_notify.coffee
 
 module.exports = (robot) ->
   account_map = {"MasatoUtsunomiya": "@m.utsunomiya"}
@@ -13,5 +13,16 @@ module.exports = (robot) ->
 
     commit_user = hits[1]
     slack_user = account_map[commit_user]
-    robot.send {room: 'test'}, "#{slack_user}: failed!"
+
+    attachment =
+      text       : "Optional text that appears within the attachment"
+
+    msgbody = JSON.stringify
+      text       : "#{slack_user}: failed!"
+      username   : @robot.name
+      channel    : "test"
+      attachments : [attachment]
+      link_names : 1
+
+    robot.customMessage msgbody
     return
