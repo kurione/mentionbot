@@ -11,12 +11,10 @@ module.exports = (robot) ->
 
   slack = robot.adapter.client
   slack.on 'message', (msg) ->
-    return if msg.subtype is 'bot_message'
+    reg_result = msg.text.toString().match(/Failed:  (.+?)'s build/)
+    return if reg_result is null
 
-    hits = msg.text.toString().match(/Failed:  (.+?)'s build/)
-    return if hits is null
-
-    commit_user = hits[1]
+    commit_user = reg_result[1]
     slack_user = account_map[commit_user]
 
     attachment =
