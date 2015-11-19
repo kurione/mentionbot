@@ -20,7 +20,7 @@ module.exports = (robot) ->
 
     reqbody = JSON.stringify(
       token       : options.webhook
-      channel     : "test"
+      channel     : "#test"
       text        : "#{slack_user}: failed!"
       link_names  : 1
       attachments : [color: "warning"]
