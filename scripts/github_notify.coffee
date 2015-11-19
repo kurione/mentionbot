@@ -28,7 +28,7 @@ module.exports = (robot) ->
 
     robot.logger.info reqbody
 
-    robot.http(options.webhook)
+    robot.http(options.token)
       .header("Content-Type", "application/json")
       .post(reqbody) (err, res, body) ->
         return if res.statusCode == 200
