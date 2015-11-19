@@ -18,12 +18,13 @@ module.exports = (robot) ->
     commit_user = hits[1]
     slack_user = account_map[commit_user]
 
-    reqbody =
+    reqbody = JSON.stringify(
       token       : options.token
       channel     : "test"
       text        : "#{slack_user}: failed!"
       link_names  : 1
       attachments : [color: "warning"]
+      )
 
     robot.http(options.webhook)
       .header("Content-Type", "application/json")
