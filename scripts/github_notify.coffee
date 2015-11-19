@@ -22,13 +22,15 @@ module.exports = (robot) ->
       token       : options.webhook
       channel     : "#test"
       text        : "#{slack_user}: failed!"
+      username    : "notifybot"
+      icon_emoji  : ":slack:"
       link_names  : 1
-      attachments : [color: "warning"]
+      attachments : [color: "#36a64f"]
       )
 
     robot.logger.info reqbody
 
-    robot.http(options.token)
+    robot.http(options.webhook)
       .header("Content-Type", "application/json")
       .post(reqbody) (err, res, body) ->
         return if res.statusCode == 200
