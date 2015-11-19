@@ -12,8 +12,6 @@ module.exports = (robot) ->
   slack = robot.adapter.client
   slack.on 'message', (msg) ->
 
-    robot.logger.info msg
-
     reg_result = msg.text.toString().match(/Failed:  (.+?)'s build/)
     return if reg_result is null
 
