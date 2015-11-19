@@ -24,5 +24,4 @@ module.exports = (robot) ->
       attachments : [attachment]
       link_names : 1
 
-    robot.customMessage msgbody
-    return
+    robot.customMessage(msgbody)
