@@ -14,14 +14,11 @@ module.exports = (robot) ->
     commit_user = hits[1]
     slack_user = account_map[commit_user]
 
-    attachment =
-      text       : "Optional text that appears within the attachment"
-
-    msgbody = JSON.stringify
-      text       : "#{slack_user}: failed!"
-      username   : "notifybot"
-      channel    : "test"
-      attachments : [attachment]
-      link_names : 1
-
-    slack.customMessage msgbody
+    robot.emit 'slack.attachment',
+      message: "#{slack_user}: failed!"
+      content:
+        text      : "#{slack_user}: failed!"
+        color     : "warning",
+      username    : "notifybot"
+      channel     : "test"
+      link_names  : 1
