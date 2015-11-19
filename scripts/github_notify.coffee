@@ -19,7 +19,7 @@ module.exports = (robot) ->
     slack_user = account_map[commit_user]
 
     reqbody = JSON.stringify(
-      token       : options.token
+      token       : options.webhook
       channel     : "test"
       text        : "#{slack_user}: failed!"
       link_names  : 1
