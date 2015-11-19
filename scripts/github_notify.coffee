@@ -24,4 +24,4 @@ module.exports = (robot) ->
       attachments : [attachment]
       link_names : 1
 
-    robot.send {room: 'test'}, msgbody
+    slack.customMessage msgbody
