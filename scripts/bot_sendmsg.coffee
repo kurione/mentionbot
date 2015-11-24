@@ -2,35 +2,46 @@
 #   bot_sendmsg.coffee
 
 module.exports = (robot) ->
-  options =
+  MEMBER_KEY = "member"
+  OPTIONS =
     webhook: process.env.HUBOT_SLACK_INCOMING_WEBHOOK
 
-  robot.adapter.client.on 'message', (msg) ->
-    reg_result = msg.text.toString().match(/Failed:  (.+?)'s build/)
-    return if reg_result is null
+  robot.hear /Failed:  (.+)'s build/i, (msg) ->
+    github_name = msg.match[1]
+    slack_name = get_slackname github_name
+    if slack_name
+      attachment =
+        text    : "#{slack_name}: deployに失敗したらしいよ"
+        color   : "warning"
 
-    github_commit_user = reg_result[1]
-    slack_user = account_map[github_commit_user]
+      reqbody = JSON.stringify(
+        token       : OPTIONS.webhook
+        channel     : "#test"
+        text        : ""
+        username    : "notifybot"
+        icon_emoji  : ":slack:"
+        link_names  : 1
+        attachments : [attachment]
+        )
 
-    attachment =
-      text    : "#{slack_user}: deployに失敗したらしいよ"
-      color   : "warning"
+      robot.logger.info reqbody
+      robot.http(OPTIONS.webhook)
+        .header("Content-Type", "application/json")
+        .post(reqbody) (err, res, body) ->
+          return if res.statusCode == 200
+          robot.logger.error "Error!", res.statusCode, body
 
-    reqbody = JSON.stringify(
-      token       : options.webhook
-      channel     : "#test"
-      text        : ""
-      username    : "notifybot"
-      icon_emoji  : ":slack:"
-      link_names  : 1
-      attachments : [attachment]
-      )
+  get_slackname = (github_name) ->
+    members = (robot.brain.get MEMBER_KEY) or []
+    index = find_member(members, github_name)
+    if index >= 0
+      return members[index].slack_name
+    return
 
-    robot.http(options.webhook)
-      .header("Content-Type", "application/json")
-      .post(reqbody) (err, res, body) ->
-        return if res.statusCode == 200
-
-        robot.logger.error "Error!", res.statusCode, body
-
-    robot.logger.info reqbody
+  find_member = (members, key) ->
+    index = 0
+    for member in members
+      if key == member.github_name
+        return index
+      index = index + 1
+    return
