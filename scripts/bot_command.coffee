@@ -24,10 +24,7 @@ module.exports = (robot) ->
     lists = ""
     for member in members
       lists += "#{member.github_name}:#{member.slack_name},"
-    if lists
-      msg.send lists
-    else
-      msg.send "nobody."
+    msg.send if lists then lists else "nobody."
 
   robot.respond /remove (.+)$/i, (msg) ->
     members = (robot.brain.get MEMBER_KEY) or []
@@ -42,9 +39,7 @@ module.exports = (robot) ->
       msg.send "NG. #{member} is not found. try list command."
 
   find_member = (members, key) ->
-    index = 0
-    for member in members
+    for member, index in members
       if key == member.github_name
         return index
-      index = index + 1
     return
