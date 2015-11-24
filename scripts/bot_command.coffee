@@ -41,7 +41,7 @@ module.exports = (robot) ->
   find_member = (members, key) ->
     index = 0
     for member in members
-      if key == members.github_name
+      if key == member.github_name
         return index
       index = index + 1
     return
