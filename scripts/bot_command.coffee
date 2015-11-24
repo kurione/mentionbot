@@ -2,6 +2,7 @@
 #   bot_command.coffee
 
 module.exports = (robot) ->
+  CHANNEL = room: "test"
   MEMBER_KEY = "member"
 
   robot.respond /add (.+) (.+)$/i, (msg) ->
@@ -12,18 +13,18 @@ module.exports = (robot) ->
 
     index = find_member(members, member.github_name)
     if index >= 0
-      msg.send "#test", "#{member.github_name} is already exists. try remove."
+      msg.send CHANNEL, "#{member.github_name} is already exists. try remove."
     else
       members.push member
       robot.brain.set(MEMBER_KEY, members)
-      msg.send "#test", "OK. add user github=#{member.github_name} slack=#{member.slack_name}"
+      msg.send CHANNEL, "OK. add user github=#{member.github_name},slack=#{member.slack_name}"
 
   robot.respond /list$/i, (msg) ->
     members = (robot.brain.get MEMBER_KEY) or []
     lists = ""
     for member in members
       lists += "#{member.github_name}:#{member.slack_name},"
-    msg.send "#test", lists
+    msg.send CHANNEL, lists
 
   robot.respond /remove (.+)$/i, (msg) ->
     members = (robot.brain.get MEMBER_KEY) or []
@@ -33,9 +34,9 @@ module.exports = (robot) ->
     if index >= 0
       members.splice(index, 1)
       robot.brain.set(MEMBER_KEY, members)
-      msg.send "#test", "OK. remove #{member}."
+      msg.send CHANNEL, "OK. remove #{member}."
     else
-      msg.send "#test", "#{member} is not found. try list command."
+      msg.send CHANNEL, "#{member} is not found. try list command."
 
   find_member = (members, key) ->
     index = 0
