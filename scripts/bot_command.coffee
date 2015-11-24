@@ -13,7 +13,7 @@ module.exports = (robot) ->
 
     index = find_member(members, member.github_name)
     if index >= 0
-      msg.send "#{member.github_name} is already exists. try remove."
+      msg.send "NG. #{member.github_name} is already exists. try remove."
     else
       members.push member
       robot.brain.set(MEMBER_KEY, members)
@@ -24,7 +24,10 @@ module.exports = (robot) ->
     lists = ""
     for member in members
       lists += "#{member.github_name}:#{member.slack_name},"
-    msg.send lists
+    if lists
+      msg.send lists
+    else
+      msg.send "nothing."
 
   robot.respond /remove (.+)$/i, (msg) ->
     members = (robot.brain.get MEMBER_KEY) or []
@@ -36,7 +39,7 @@ module.exports = (robot) ->
       robot.brain.set(MEMBER_KEY, members)
       msg.send "OK. remove #{member}."
     else
-      msg.send "#{member} is not found. try list command."
+      msg.send "NG. #{member} is not found. try list command."
 
   find_member = (members, key) ->
     index = 0
