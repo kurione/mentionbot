@@ -27,7 +27,7 @@ module.exports = (robot) ->
     if lists
       msg.send lists
     else
-      msg.send "nothing."
+      msg.send "nobody."
 
   robot.respond /remove (.+)$/i, (msg) ->
     members = (robot.brain.get MEMBER_KEY) or []
