@@ -1,17 +1,11 @@
 # Description:
-#   github_notify.coffee
+#   bot_sendmsg.coffee
 
 module.exports = (robot) ->
   options =
     webhook: process.env.HUBOT_SLACK_INCOMING_WEBHOOK
 
-  account_map = {
-    "MasatoUtsunomiya": "@m.utsunomiya"
-  }
-
-  slack = robot.adapter.client
-  slack.on 'message', (msg) ->
-
+  robot.adapter.client.on 'message', (msg) ->
     reg_result = msg.text.toString().match(/Failed:  (.+?)'s build/)
     return if reg_result is null
 
@@ -32,11 +26,11 @@ module.exports = (robot) ->
       attachments : [attachment]
       )
 
-    robot.logger.info reqbody
-
     robot.http(options.webhook)
       .header("Content-Type", "application/json")
       .post(reqbody) (err, res, body) ->
         return if res.statusCode == 200
 
         robot.logger.error "Error!", res.statusCode, body
+
+    robot.logger.info reqbody
