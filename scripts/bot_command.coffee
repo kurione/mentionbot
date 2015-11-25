@@ -41,7 +41,7 @@ module.exports = (robot) ->
 
   robot.respond /help$/i, (msg) ->
     attachment =
-      text    : "Run the following command to"
+      text    : "Run the following command to ..."
       color   : "good"
       fields  : [
         contents =
