@@ -3,19 +3,20 @@
 
 module.exports = (robot) ->
   MEMBER_KEY = "member"
-  OPTIONS =
+  options =
     webhook: process.env.HUBOT_SLACK_INCOMING_WEBHOOK
 
   robot.hear /Failed:  (.+)'s build/i, (msg) ->
     github_name = msg.match[1]
     slack_name = get_slackname github_name
+
     if slack_name
       attachment =
         text    : "#{slack_name}: deployに失敗したらしいよ"
         color   : "warning"
 
       reqbody = JSON.stringify(
-        token       : OPTIONS.webhook
+        token       : options.webhook
         channel     : "#test"
         text        : ""
         username    : "notifybot"
@@ -24,8 +25,7 @@ module.exports = (robot) ->
         attachments : [attachment]
         )
 
-      robot.logger.info reqbody
-      robot.http(OPTIONS.webhook)
+      robot.http(options.webhook)
         .header("Content-Type", "application/json")
         .post(reqbody) (err, res, body) ->
           return if res.statusCode == 200

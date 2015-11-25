@@ -2,8 +2,9 @@
 #   bot_command.coffee
 
 module.exports = (robot) ->
-  CHANNEL = room: "test"
   MEMBER_KEY = "member"
+  options =
+    webhook: process.env.HUBOT_SLACK_INCOMING_WEBHOOK
 
   robot.respond /add (.+) (.+)$/i, (msg) ->
     members = (robot.brain.get MEMBER_KEY) or []
@@ -13,7 +14,7 @@ module.exports = (robot) ->
 
     index = find_member(members, member.github_name)
     if index >= 0
-      msg.send "NG. #{member.github_name} is already exists. try remove."
+      msg.send "NG. #{member.github_name} is already exists. try remove command."
     else
       members.push member
       robot.brain.set(MEMBER_KEY, members)
@@ -37,6 +38,41 @@ module.exports = (robot) ->
       msg.send "OK. remove #{member}."
     else
       msg.send "NG. #{member} is not found. try list command."
+
+  robot.respond /help$/i, (msg) ->
+    attachment =
+      text    : ""
+      color   : "good"
+      fields  : [
+        contents =
+          title: "Add User"
+          value: "@notifybot add <github_name> <slack_name>"
+          short: false
+        contents =
+          title: "Remove User"
+          value: "@notifybot remove <github_name>"
+          short: false
+        contents =
+          title: "List User"
+          value: "@notifybot list"
+          short: false
+      ]
+
+    reqbody = JSON.stringify(
+      token       : options.webhook
+      channel     : "#test"
+      text        : ""
+      username    : "notifybot"
+      icon_emoji  : ":slack:"
+      link_names  : 1
+      attachments : [attachment]
+      )
+
+    robot.http(options.webhook)
+      .header("Content-Type", "application/json")
+      .post(reqbody) (err, res, body) ->
+        return if res.statusCode == 200
+        robot.logger.error "Error!", res.statusCode, body
 
   find_member = (members, key) ->
     for member, index in members
