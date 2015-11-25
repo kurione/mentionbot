@@ -39,7 +39,7 @@ module.exports = (robot) ->
     else
       msg.send "NG. #{member} is not found. try list command."
 
-  robot.respond /help$/i, (msg) ->
+  robot.respond /howto$/i, (msg) ->
     attachment =
       text    : ""
       color   : "good"
